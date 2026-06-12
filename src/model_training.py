@@ -2,6 +2,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
 
 from src.utils import save_model
 
@@ -56,3 +58,15 @@ def train_xgboost(X_train, y_train, random_state=42):
     model.fit(X_train, y_train)
     save_model(model, "xgboost")
     return model
+
+def train_neural_network(X_train, y_train, random_state=42):
+    model = Sequential([
+        Dense(64, activation='relu', input_shape=(X_train.shape[1],)),
+        Dense(32, activation='relu'),
+        Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    model.fit(X_train, y_train, epochs=20, batch_size=32, validation_split=0.2)
+    save_model(model, "neural_network")
+    return model
+

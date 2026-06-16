@@ -1,0 +1,12 @@
+Model: decision_tree
+ROC-AUC : 0.8915
+AUPRC   : 0.4639
+
+              precision    recall  f1-score   support
+
+  Legitimate       1.00      0.99      1.00     56864
+       Fraud       0.13      0.79      0.23        98
+
+    accuracy                           0.99     56962
+   macro avg       0.57      0.89      0.61     56962
+weighted avg       1.00      0.99      0.99     56962

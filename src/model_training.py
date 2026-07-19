@@ -7,8 +7,7 @@ from tensorflow.keras.layers import Dense
 
 from src.utils import save_model
 
-
-def train_logistic_regression(X_train, y_train, class_weight="balanced", random_state=42):
+def train_logistic_regression(X_train, y_train, class_weight = "balanced", random_state=42):
     model = LogisticRegression(
         max_iter=1000,
         class_weight=class_weight,
@@ -18,7 +17,6 @@ def train_logistic_regression(X_train, y_train, class_weight="balanced", random_
     model.fit(X_train, y_train)
     save_model(model, "logistic_regression")
     return model
-
 
 def train_decision_tree(X_train, y_train, class_weight="balanced", random_state=42):
     model = DecisionTreeClassifier(
@@ -35,7 +33,7 @@ def train_random_forest(X_train, y_train, class_weight="balanced", n_estimators=
     model = RandomForestClassifier(
         n_estimators=n_estimators,
         class_weight=class_weight,
-        n_jobs=-1,
+        n_jobs = -1,
         random_state=random_state,
     )
     model.fit(X_train, y_train)

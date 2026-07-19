@@ -1,5 +1,7 @@
 # Credit Card Fraud Detection — Machine Learning Model Comparison
 
+[![CI](https://github.com/SumanAch10/credit_card_fraud_detection/actions/workflows/ci.yml/badge.svg)](https://github.com/SumanAch10/credit_card_fraud_detection/actions/workflows/ci.yml)
+
 A machine learning project that detects fraudulent credit card transactions on the Kaggle Credit Card Fraud dataset. Five classifiers are trained, evaluated with fraud-appropriate metrics, and compared to identify the best model for a real-world financial setting.
 
 ---
@@ -17,6 +19,7 @@ A machine learning project that detects fraudulent credit card transactions on t
 - [Results](#results)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Development](#development)
 - [Tech Stack](#tech-stack)
 
 ---
@@ -310,6 +313,50 @@ model = load_model("xgboost")   # loads models/xgboost.pkl
 
 ---
 
+## Development
+
+The project is packaged (`pyproject.toml`) and has a pytest suite covering `src/` plus a GitHub Actions CI pipeline that lints and tests every push/PR to `main`.
+
+### Setup
+
+```bash
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+
+# Editable install with dev tooling + optional extras
+pip install -e ".[dev,full,notebooks]"
+
+# Enable pre-commit hooks (ruff/black/isort + basic hygiene checks)
+pre-commit install
+```
+
+`full` pulls in `imbalanced-learn` and `tensorflow-cpu`, required by `src/feature_engineering.py` (SMOTE) and the neural network in `src/model_training.py`. `notebooks` pulls in `jupyter`/`notebook`/`ipykernel`.
+
+### Running tests
+
+```bash
+pytest                                    # full suite
+pytest --cov=src --cov-report=term-missing  # with coverage
+```
+
+Tests that depend on `imbalanced-learn` or `tensorflow` are skipped automatically (`pytest.importorskip`) if those optional extras aren't installed.
+
+### Linting & formatting
+
+```bash
+ruff check src tests      # static analysis
+black --check src tests   # formatting
+isort --check src tests   # import order
+```
+
+`src/` predates this tooling and is intentionally left untouched — its pre-existing style issues (import order, line length, an unused import or two) are silenced via `per-file-ignores` in `pyproject.toml` rather than auto-fixed, so the original model logic stays byte-for-byte as written. `black`/`isort` are scoped to `tests/` for the same reason. New code under `src/`, `tests/`, or elsewhere is held to the full rule set.
+
+### CI
+
+`.github/workflows/ci.yml` runs two jobs on every push/PR to `main`: `lint` (ruff, black, isort) and `test` (pytest with coverage, installing the `dev` and `full` extras).
+
+---
+
 ## Tech Stack
 
 | Library | Purpose |
@@ -324,3 +371,6 @@ model = load_model("xgboost")   # loads models/xgboost.pkl
 | `seaborn` | Statistical visualisations |
 | `joblib` | Model serialisation |
 | `jupyter` | Interactive notebooks |
+| `pytest` / `pytest-cov` | Test suite and coverage reporting |
+| `ruff` / `black` / `isort` | Linting, formatting, import ordering |
+| `pre-commit` | Git hook management for the tools above |

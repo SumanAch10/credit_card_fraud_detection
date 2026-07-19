@@ -77,13 +77,14 @@ def plot_roc_curves(results: list, save: bool = True):
     ax.legend(loc="lower right")
     plt.tight_layout()
     if save:
-        path = os.path.join(RESULTS_DIR, "roc_curves", "roc_comparison.png")
+        path = os.path.join(RESULTS_DIR, "roc_curves", f"roc_comparison_{results[0]['model_name']}.png")
         fig.savefig(path)
         print(f"Saved: {path}")
     plt.show()
 
 
 def plot_pr_curves(results: list, save: bool = True):
+    print("Inside pr curve")
     ensure_results_dirs()
     fig, ax = plt.subplots(figsize=(7, 6))
     for r in results:
@@ -94,7 +95,7 @@ def plot_pr_curves(results: list, save: bool = True):
     ax.legend(loc="upper right")
     plt.tight_layout()
     if save:
-        path = os.path.join(RESULTS_DIR, "pr_curves", "auprc_comparison.png")
+        path = os.path.join(RESULTS_DIR, "pr_curves", f"auprc_comparison_{results[0]['model_name']}.png")
         fig.savefig(path)
         print(f"Saved: {path}")
     plt.show()

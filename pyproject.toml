@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "credit-card-fraud-detection"
+version = "0.1.0"
+description = "Machine learning pipeline for detecting fraudulent credit card transactions"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "scikit-learn",
+    "xgboost",
+    "joblib",
+    "scipy",
+]
+
+[project.optional-dependencies]
+notebooks = [
+    "jupyter",
+    "notebook",
+    "ipykernel",
+]
+full = [
+    "imbalanced-learn",
+    "tensorflow-cpu",
+]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "black>=24.0",
+    "isort>=5.13",
+    "pre-commit>=3.6",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+# src/ predates this lint setup and is kept byte-for-byte as-is; only silence
+# the pre-existing style violations there so real bugs (undefined names, etc.)
+# are still caught. New code is held to the full rule set.
+[tool.ruff.lint.per-file-ignores]
+"src/*.py" = ["E501", "F401", "I001"]
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+extend-exclude = "^/src/"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = ["src"]

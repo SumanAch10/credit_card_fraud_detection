@@ -49,6 +49,15 @@ def save_processed(X_train, X_test, y_train, y_test):
     y_test.to_csv(os.path.join(PROCESSED_DIR, "y_test.csv"), index=False)
     print(f"Processed splits saved to {PROCESSED_DIR}")
 
+def save_processed_synthetic(X_train_sm,y_train_sm):
+    try:
+        os.makedirs(PROCESSED_DIR, exist_ok=True)
+        X_train_sm.to_csv(os.path.join(PROCESSED_DIR,"X_train_sm.csv"),index=False)
+        y_train_sm.to_csv(os.path.join(PROCESSED_DIR,"y_train_sm.csv"),index=False)
+        print(f"Processed synthetic splits saved")
+    except FileExistsError as e:
+        print(f"Error: {e}")
+    
 
 def load_processed():
     X_train = pd.read_csv(os.path.join(PROCESSED_DIR, "X_train.csv"))
@@ -56,3 +65,9 @@ def load_processed():
     y_train = pd.read_csv(os.path.join(PROCESSED_DIR, "y_train.csv")).squeeze()
     y_test = pd.read_csv(os.path.join(PROCESSED_DIR, "y_test.csv")).squeeze()
     return X_train, X_test, y_train, y_test
+
+def load_processed_sm():
+    X_train_sm = pd.read_csv(os.path.join(PROCESSED_DIR,"X_train_sm.csv"))
+    y_train_sm = pd.read_csv(os.path.join(PROCESSED_DIR,"y_train_sm.csv")).squeeze()
+    
+    return X_train_sm,y_train_sm

@@ -7,6 +7,7 @@ from tensorflow.keras.layers import Dense
 
 from src.utils import save_model
 
+#Train on original set only
 def train_logistic_regression(X_train, y_train, class_weight = "balanced", random_state=42):
     model = LogisticRegression(
         max_iter=1000,
@@ -16,6 +17,16 @@ def train_logistic_regression(X_train, y_train, class_weight = "balanced", rando
     )
     model.fit(X_train, y_train)
     save_model(model, "logistic_regression")
+    return model
+
+#Train model on Synthetic data
+def train_logistic_regression_sm(X_train, y_train, random_state=42):
+    model = LogisticRegression(
+        max_iter=1000,
+        random_state=random_state,
+        solver="lbfgs",
+    )
+    model.fit(X_train, y_train)
     return model
 
 def train_decision_tree(X_train, y_train, class_weight="balanced", random_state=42):
@@ -28,7 +39,6 @@ def train_decision_tree(X_train, y_train, class_weight="balanced", random_state=
     save_model(model, "decision_tree")
     return model
 
-
 def train_random_forest(X_train, y_train, class_weight="balanced", n_estimators=100, random_state=42):
     model = RandomForestClassifier(
         n_estimators=n_estimators,
@@ -40,6 +50,14 @@ def train_random_forest(X_train, y_train, class_weight="balanced", n_estimators=
     save_model(model, "random_forest")
     return model
 
+def train_random_forest_sm(X_train, y_train,n_estimators=100, random_state=42):
+    model = RandomForestClassifier(
+        n_estimators=n_estimators,
+        n_jobs = -1,
+        random_state=random_state,
+    )
+    model.fit(X_train, y_train)
+    return model
 
 def train_xgboost(X_train, y_train, random_state=42):
     scale_pos_weight = (y_train == 0).sum() / y_train.sum()

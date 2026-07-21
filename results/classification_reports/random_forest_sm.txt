@@ -1,0 +1,12 @@
+Model: random_forest_sm
+ROC-AUC : 0.9630
+AUPRC   : 0.8734
+
+              precision    recall  f1-score   support
+
+  Legitimate       1.00      1.00      1.00     56864
+       Fraud       0.94      0.82      0.87        98
+
+    accuracy                           1.00     56962
+   macro avg       0.97      0.91      0.94     56962
+weighted avg       1.00      1.00      1.00     56962
